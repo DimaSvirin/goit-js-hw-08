@@ -7,10 +7,13 @@ const localCurrent = JSON.parse(localStorage.getItem(STORAGE_KEY));
 const formData = localCurrent ? localCurrent : {};
 
 form.addEventListener('submit', onFormSubmit);
-form.addEventListener('input', onFormInput);
+form.addEventListener('input', throttle(onFormInput, 500));
 
+for (const el of form.elements) {
+    el.value = formData[el.name] ? formData[el.name] : '';
+  }
 function onFormInput(e) {
-    formData[e.target.name] = e.target.value.trim;
+    formData[e.target.name] = e.target.value;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
 
